@@ -4,15 +4,24 @@ import (
 	"github.com/nl8590687/asrt-sdk-go/common"
 )
 
+// ISpeechRecognizer ASRT语音识别SDK语音识别抽象接口
 type ISpeechRecognizer interface {
+	// Recognite 调用ASRT语音识别
 	Recognite(wavData []byte, frameRate int, channels int, byteWidth int) (*common.AsrtApiResponse, error)
+	// RecogniteSpeech 调用ASRT语音识别声学模型
 	RecogniteSpeech(wavData []byte, frameRate int, channels int, byteWidth int) (*common.AsrtApiResponse, error)
+	// RecogniteLanguage 调用ASRT语音识别语言模型
 	RecogniteLanguage(sequencePinyin []string) (*common.AsrtApiResponse, error)
+	// RecogniteFile 调用ASRT语音识别来识别指定文件名的音频文件
 	RecogniteFile(filename string) (*common.AsrtApiResponse, error)
 }
 
+// BaseSpeechRecognizer ASRT语音识别SDK语音识别基类
 type BaseSpeechRecognizer struct {
-	Host     string
-	Port     string
+	// Host 主机域名或IP
+	Host string
+	// Port 主机端口号
+	Port string
+	// Protocol 网络协议
 	Protocol string
 }

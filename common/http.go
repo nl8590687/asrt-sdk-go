@@ -8,6 +8,7 @@ import (
 	"net/url"
 )
 
+// SendHttpRequestGet 发送HTTP GET请求
 func SendHttpRequestGet(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -32,6 +33,7 @@ func SendHttpRequestGet(url string) ([]byte, error) {
 	return body, nil
 }
 
+// SendHttpRequestPost 发送HTTP POST请求
 func SendHttpRequestPost(url string, bytesForm []byte, contentType string) ([]byte, error) {
 	bodyReader := bytes.NewReader(bytesForm)
 	resp, err := http.Post(url, contentType, bodyReader)
@@ -57,12 +59,14 @@ func SendHttpRequestPost(url string, bytesForm []byte, contentType string) ([]by
 	return body, nil
 }
 
+// UrlEncode URL编码
 func UrlEncode(text string) string {
 	var urlStr string = text
 	escapeUrl := url.QueryEscape(urlStr)
 	return escapeUrl
 }
 
+// UrlDecode URL解码
 func UrlDecode(text string) string {
 	enEscapeUrl, err := url.QueryUnescape(text)
 	if err != nil {

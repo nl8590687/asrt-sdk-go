@@ -28,6 +28,7 @@ type Wav struct {
 	cksize uint32
 }
 
+// NewBlankWav 获取一个新的空白Wav对象
 func NewBlankWav(frameRate int, channels int, sampleWidth int) Wav {
 	wave := Wav{
 		FrameRate:   frameRate,
@@ -256,7 +257,8 @@ func (w *Wav) packWave() ([]byte, error) {
 	return byteBuf.Bytes(), nil
 }
 
-func (w *Wav) GetRawWave() []byte {
+// GetRawSamples 读取Wave格式的Samples原始数据
+func (w *Wav) GetRawSamples() []byte {
 	var byteBuf bytes.Buffer
 	var tmpBytes []byte
 	// wave data

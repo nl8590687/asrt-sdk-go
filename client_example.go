@@ -30,7 +30,7 @@ func main() {
 	}
 	// ======================================================
 	// 识别一段Wave音频序列
-	result, err = sr.Recognite(wave.GetRawWave(), wave.FrameRate, wave.Channels, wave.SampleWidth)
+	result, err = sr.Recognite(wave.GetRawSamples(), wave.FrameRate, wave.Channels, wave.SampleWidth)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -38,7 +38,7 @@ func main() {
 	fmt.Println("语音识别结果：", result.Result)
 	// ======================================================
 	// 调用声学模型识别一段Wave音频序列
-	result, err = sr.RecogniteSpeech(wave.GetRawWave(), wave.FrameRate, wave.Channels, wave.SampleWidth)
+	result, err = sr.RecogniteSpeech(wave.GetRawSamples(), wave.FrameRate, wave.Channels, wave.SampleWidth)
 	if err != nil {
 		fmt.Println(err)
 	}

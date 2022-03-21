@@ -70,11 +70,11 @@ func (t *TestUnitWavSuite) TestDeserialize() {
 	for _, tt := range tests {
 		t.Run(tt.name, func() {
 			wavBytes := readBinFile(tt.waveFile)
-			fmt.Println("waveBytes的长度：", len(wavBytes))
+			fmt.Println("waveBytes的长度:", len(wavBytes))
 
 			var wave = Wav{}
 			err := wave.Deserialize(wavBytes)
-			fmt.Println("wav类：", wave.BytesPerSec, wave.Channels, wave.FrameRate, wave.SampleWidth, wave.Samples[0][0:100])
+			fmt.Println("wav类:", wave.BytesPerSec, wave.Channels, wave.FrameRate, wave.SampleWidth, wave.Samples[0][0:100])
 
 			log.Println(err)
 			t.Equal(tt.want, err == nil)
@@ -98,20 +98,20 @@ func (t *TestUnitWavSuite) TestSerialize() {
 	for _, tt := range tests {
 		t.Run(tt.name, func() {
 			wavBytes := readBinFile(tt.waveFile)
-			fmt.Println("waveBytes的长度：", len(wavBytes))
+			fmt.Println("waveBytes的长度:", len(wavBytes))
 
 			var wave = Wav{}
-			err := wave.Deserialize(wavBytes)
-			fmt.Println("wav类：", wave.BytesPerSec, wave.Channels, wave.FrameRate, wave.SampleWidth, wave.Samples[0][0:100])
+			_ = wave.Deserialize(wavBytes)
+			fmt.Println("wav类:", wave.BytesPerSec, wave.Channels, wave.FrameRate, wave.SampleWidth, wave.Samples[0][0:100])
 
-			waveBytes_new, err := wave.Serialize()
-			err = writeBinFile("../testData/tmp.wav", waveBytes_new)
+			waveBytes_new, _ := wave.Serialize()
+			_ = writeBinFile("../testData/tmp.wav", waveBytes_new)
 
 			wavBytes_new2 := readBinFile(tt.waveFile)
-			fmt.Println("waveBytes的长度：", len(wavBytes_new2))
+			fmt.Println("waveBytes的长度:", len(wavBytes_new2))
 
 			var wave_new = Wav{}
-			err = wave_new.Deserialize(wavBytes_new2)
+			err := wave_new.Deserialize(wavBytes_new2)
 
 			log.Println(err)
 			t.Equal(tt.want, err == nil)

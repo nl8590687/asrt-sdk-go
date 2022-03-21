@@ -1,4 +1,4 @@
-// package common 一些有用的功能库
+// package common 一些有用的通用功能函数库
 package common
 
 import (

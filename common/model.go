@@ -9,12 +9,14 @@ var (
 	API_STATUS_CODE_SERVER_ERROR_RUNNING int = 500001 // 服务器运行中出错
 )
 
+// AsrtApiResponse ASRT语音识别API响应类
 type AsrtApiResponse struct {
 	StatusCode    int         `json:"status_code"`
 	StatucMesaage string      `json:"status_message"`
 	Result        interface{} `json:"result"`
 }
 
+// AsrtApiSpeechRequest ASRT语音识别API语音数据请求类
 type AsrtApiSpeechRequest struct {
 	Samples    string `json:"samples"`
 	SampleRate int    `json:"sample_rate"`
@@ -22,6 +24,7 @@ type AsrtApiSpeechRequest struct {
 	ByteWidth  int    `json:"byte_width"`
 }
 
+// AsrtApiLanguageRequest ASRT语音识别API语言模型请求类
 type AsrtApiLanguageRequest struct {
 	SequencePinyin []string `json:"sequence_pinyin"`
 }
