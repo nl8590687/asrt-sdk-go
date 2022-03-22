@@ -35,9 +35,11 @@ linters:
     - whitespace
   disable:
     - errcheck
-    - exitAfterDefer
 
 linters-settings:
+  gocritic:
+    disabled-checks:
+      - exitAfterDefer
   gci:
     local-prefixes: github.com/nl8590687/asrt-sdk-go
   goimports:
