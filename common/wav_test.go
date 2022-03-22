@@ -110,8 +110,8 @@ func (t *TestUnitWavSuite) TestSerialize() {
 			wavBytesNew2 := readBinFile(tt.waveFile)
 			fmt.Println("waveBytes的长度:", len(wavBytesNew2))
 
-			wave_new := Wav{}
-			err := wave_new.Deserialize(wavBytesNew2)
+			waveNew := Wav{}
+			err := waveNew.Deserialize(wavBytesNew2)
 
 			log.Println(err)
 			t.Equal(tt.want, err == nil)
