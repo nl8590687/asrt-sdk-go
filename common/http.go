@@ -59,20 +59,20 @@ func SendHttpRequestPost(url string, bytesForm []byte, contentType string) ([]by
 	return body, nil
 }
 
-// UrlEncode URL编码
-func UrlEncode(text string) string {
-	var urlStr string = text
-	escapeUrl := url.QueryEscape(urlStr)
-	return escapeUrl
+// URLEncode URL编码
+func URLEncode(text string) string {
+	var urlStr = text
+	escapeURL := url.QueryEscape(urlStr)
+	return escapeURL
 }
 
-// UrlDecode URL解码
-func UrlDecode(text string) string {
-	enEscapeUrl, err := url.QueryUnescape(text)
+// URLDecode URL解码
+func URLDecode(text string) string {
+	enEscapeURL, err := url.QueryUnescape(text)
 	if err != nil {
 		log.Fatalln("error: URL decode failed.", err)
 		return ""
 	}
 
-	return enEscapeUrl
+	return enEscapeURL
 }

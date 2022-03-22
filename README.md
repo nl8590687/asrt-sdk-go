@@ -4,6 +4,9 @@ ASRT Speech Recognition SDK for Golang. 用于ASRT语音识别系统的Golang SD
 [![GPL-3.0 Licensed](https://img.shields.io/badge/License-GPL3.0-blue.svg?style=flat)](https://opensource.org/licenses/GPL-3.0) 
 [![Stars](https://img.shields.io/github/stars/nl8590687/asrt_sdk_go)](https://github.com/nl8590687/asrt_sdk_go) 
 [![Golang](https://img.shields.io/badge/Go-1.16-blue.svg)](https://go.dev/) 
+[![Go Reference](https://pkg.go.dev/badge/github.com/nl8590687/asrt-sdk-go.svg)](https://pkg.go.dev/github.com/nl8590687/asrt-sdk-go)
+[![Workflow](https://github.com/nl8590687/asrt-sdk-go/actions/workflows/go.yml/badge.svg)](https://github.com/nl8590687/asrt-sdk-go/actions/workflows/go.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nl8590687/asrt-sdk-go)](https://goreportcard.com/report/github.com/nl8590687/asrt-sdk-go)
 
 An Golang SDK and Demo example for ASRT speech recognition system. 
 

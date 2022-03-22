@@ -19,25 +19,9 @@ func Base64ToBytes(base64Data string) []byte {
 	return data
 }
 
-// Base64ToBytes_UrlSafe URL安全的base64编码数据转换为[]byte字节数组
-func Base64ToBytes_UrlSafe(base64Data string) []byte {
-	data, err := base64.URLEncoding.DecodeString(base64Data)
-	if err != nil {
-		log.Println(err)
-	}
-
-	return data
-}
-
 // BytesToBase64 []byte字节数组转换为base64编码数据
 func BytesToBase64(bytesData []byte) string {
 	encodedMsg := base64.StdEncoding.EncodeToString(bytesData)
-	return encodedMsg
-}
-
-// BytesToBase64_UrlSafe []byte字节数组转换为URL安全的base64编码数据
-func BytesToBase64_UrlSafe(bytesData []byte) string {
-	encodedMsg := base64.URLEncoding.EncodeToString(bytesData)
 	return encodedMsg
 }
 
@@ -60,10 +44,6 @@ func readBinFile(filename string) []byte {
 	}
 
 	return buff[0:length]
-}
-
-func readTextFile(filename string) string {
-	return string(readBinFile(filename))
 }
 
 func writeBinFile(filename string, data []byte) error {
