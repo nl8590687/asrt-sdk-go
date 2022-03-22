@@ -100,25 +100,26 @@ func (w *Wav) parseHeader() (bodyLength uint32, startPosition uint32, err error)
 		return 0, p, fmt.Errorf("error: this file is not wave file")
 	}
 
-	var tmp = binary.BigEndian.Uint32((w.wavByteData)[p : p+4]) // 4 byte
+	tmp := binary.BigEndian.Uint32((w.wavByteData)[p : p+4]) // 4 byte
 	p += 4
-	if tmp == 0x4A554E4B { // 发现了junk flag，这个值是 junkID
+	switch tmp {
+	case 0x4A554E4B: // 发现了junk flag，这个值是 junkID
 		junklength = binary.LittleEndian.Uint32((w.wavByteData)[p : p+4]) // junk长度
 		p += 4
 		p += junklength // 将不要的junk部分跳过
 
 		_ = binary.BigEndian.Uint32((w.wavByteData)[p : p+4]) // 读fmt 标记: fmtID
 		p += 4
-	} else if tmp == 0x666D7420 { // 发现了fmt flag，这个值是 fmtID
+	case 0x666D7420: // 发现了fmt flag，这个值是 fmtID
 		_ = tmp // fmtID
-	} else {
+	default:
 		return 0, p, fmt.Errorf("error: can not find any junk or fmt flag in this wave file")
 	}
 
 	w.cksize = binary.LittleEndian.Uint32((w.wavByteData)[p : p+4]) // 4 byte，小端存储
 	p += 4
-	p_data_start := cksize
-	_ = p_data_start + 8
+	pDataStart := cksize
+	_ = pDataStart + 8
 
 	tmpWaveType := binary.LittleEndian.Uint16((w.wavByteData)[p : p+2]) // 2 byte，这个字段是小端存储
 	p += 2
@@ -257,9 +258,8 @@ func (w *Wav) packWave() []byte {
 // GetRawSamples 读取Wave格式的Samples原始数据
 func (w *Wav) GetRawSamples() []byte {
 	var byteBuf bytes.Buffer
-	var tmpBytes []byte
 	// wave data
-	tmpBytes = make([]byte, 2)
+	tmpBytes := make([]byte, 2)
 	for j := 0; j < len(w.Samples[0]); j += 1 {
 		for i := 0; i < len(w.Samples); i += 1 {
 			binary.LittleEndian.PutUint16(tmpBytes, uint16(w.Samples[i][j]))

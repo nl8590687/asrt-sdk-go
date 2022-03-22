@@ -1,12 +1,12 @@
 package common
 
 var (
-	ApiStatusCodeOK                 int = 200000 // OK
-	ApiStatusCodeClientError        int = 400000
-	ApiStatusCodeClientErrorFormat  int = 400001 // 请求数据格式错误
-	ApiStatusCodeClientErrorConfig  int = 400002 // 请求数据配置不支持
-	ApiStatusCodeServerError        int = 500000
-	ApiStatusCodeServerErrorRunning int = 500001 // 服务器运行中出错
+	APIStatusCodeOK                 int = 200000 // OK
+	APIStatusCodeClientError        int = 400000
+	APIStatusCodeClientErrorFormat  int = 400001 // 请求数据格式错误
+	APIStatusCodeClientErrorConfig  int = 400002 // 请求数据配置不支持
+	APIStatusCodeServerError        int = 500000
+	APIStatusCodeServerErrorRunning int = 500001 // 服务器运行中出错
 )
 
 // AsrtAPIResponse ASRT语音识别API响应类

@@ -50,7 +50,7 @@ func (h *HTTPSpeechRecognizer) Recognite(wavData []byte, frameRate int, channels
 
 	contentType := "application/json"
 	url := fmt.Sprintf("%s/all", h.getURL())
-	rspBody, err := common.SendHttpRequestPost(url, byteForm, contentType)
+	rspBody, err := common.SendHTTPRequestPost(url, byteForm, contentType)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (h *HTTPSpeechRecognizer) RecogniteSpeech(wavData []byte, frameRate int, ch
 
 	contentType := "application/json"
 	url := fmt.Sprintf("%s/speech", h.getURL())
-	rspBody, err := common.SendHttpRequestPost(url, byteForm, contentType)
+	rspBody, err := common.SendHTTPRequestPost(url, byteForm, contentType)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (h *HTTPSpeechRecognizer) RecogniteLanguage(sequencePinyin []string) (*comm
 
 	contentType := "application/json"
 	url := fmt.Sprintf("%s/language", h.getURL())
-	rspBody, err := common.SendHttpRequestPost(url, byteForm, contentType)
+	rspBody, err := common.SendHTTPRequestPost(url, byteForm, contentType)
 	if err != nil {
 		return nil, err
 	}
