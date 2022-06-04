@@ -69,7 +69,8 @@ func SendHTTPRequestPost(url string, bytesForm []byte, contentType string) ([]by
 }
 
 // SendHTTPRequest 发送HTTP请求
-func SendHTTPRequest(url string, method string, bytesBody []byte, contentType string) ([]byte, error) {
+func SendHTTPRequest(url string, method string, bytesBody []byte,
+	contentType string) ([]byte, error) {
 	client := &http.Client{
 		Timeout: 30 * time.Second,
 	}
