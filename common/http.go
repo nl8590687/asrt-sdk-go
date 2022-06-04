@@ -12,10 +12,8 @@ import (
 	"time"
 )
 
-var (
-	httpUserAgent string = fmt.Sprintf("%s%s%s%s%s", "ASRT-SDK client/", "v1",
-		" (", runtime.Version(), ") (https://asrt.ailemon.net/)")
-)
+var httpUserAgent string = fmt.Sprintf("%s%s%s%s%s", "ASRT-SDK client/", "v1",
+	" (", runtime.Version(), ") (https://asrt.ailemon.net/)")
 
 // SendHTTPRequestGet 发送HTTP GET请求
 func SendHTTPRequestGet(url string) ([]byte, error) {
@@ -69,8 +67,9 @@ func SendHTTPRequestPost(url string, bytesForm []byte, contentType string) ([]by
 }
 
 // SendHTTPRequest 发送HTTP请求
-func SendHTTPRequest(url string, method string, bytesBody []byte,
-	contentType string) ([]byte, error) {
+func SendHTTPRequest(url string, method string,
+	bytesBody []byte, contentType string,
+) ([]byte, error) {
 	client := &http.Client{
 		Timeout: 30 * time.Second,
 	}
