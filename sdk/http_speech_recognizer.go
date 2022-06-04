@@ -169,7 +169,7 @@ func (h *HTTPSpeechRecognizer) RecogniteFile(filename string) ([]*common.AsrtAPI
 	var asrtResult []*common.AsrtAPIResponse
 	duration := 2 * 16000 * 10
 
-	var index = 0
+	index := 0
 	for ; index < len(byteData)/duration+1; index++ {
 		rsp, err := h.Recognite(byteData, wavAudio.FrameRate, wavAudio.Channels, wavAudio.SampleWidth)
 		if err != nil {
