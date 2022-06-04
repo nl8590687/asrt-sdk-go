@@ -16,12 +16,14 @@ func main() {
 	// ======================================================
 	// 识别文件
 	filename := "testData/data1.wav"
-	result, err := sr.RecogniteFile(filename)
+	resultFile, err := sr.RecogniteFile(filename)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Println("语音识别结果：", result.Result)
+	for index, res := range resultFile {
+		fmt.Println("Wav文件语音识别结果 ", index, ":", res.Result)
+	}
 
 	byteData := sdk.LoadFile(filename)
 	wave, err := sdk.DecodeWav(byteData)
@@ -30,7 +32,7 @@ func main() {
 	}
 	// ======================================================
 	// 识别一段Wave音频序列
-	result, err = sr.Recognite(wave.GetRawSamples(), wave.FrameRate, wave.Channels, wave.SampleWidth)
+	result, err := sr.Recognite(wave.GetRawSamples(), wave.FrameRate, wave.Channels, wave.SampleWidth)
 	if err != nil {
 		fmt.Println(err)
 	}

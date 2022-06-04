@@ -34,7 +34,7 @@ An Golang SDK and Demo example for ASRT speech recognition system.
 
 ## Go Module 下载安装
 ```shell
-$ go mod download github.com/nl8590687/asrt-sdk-go
+$ go get github.com/nl8590687/asrt-sdk-go
 ```
 ## 软件环境要求
 * 操作系统: 支持Windows 和 Linux、MacOS

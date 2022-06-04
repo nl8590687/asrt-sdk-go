@@ -23,7 +23,7 @@ package sdk
 // GetSpeechRecognizer 获取一个语音识别调用类实例对象
 func GetSpeechRecognizer(host string, port string, protocol string) ISpeechRecognizer {
 	if protocol == "http" || protocol == "https" {
-		return NewHTTPSpeechRecognizer(host, port, protocol)
+		return NewHTTPSpeechRecognizer(host, port, protocol, "")
 	}
 
 	return nil

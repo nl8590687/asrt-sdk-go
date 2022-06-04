@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/nl8590687/asrt-sdk-go/common"
 )
+
+var wavDataMaxLength = 16000 * 2 * 16
 
 // HTTPSpeechRecognizer 调用ASRT语音识别系统HTTP+JSON协议接口的语音识别类
 type HTTPSpeechRecognizer struct {
@@ -16,7 +19,12 @@ type HTTPSpeechRecognizer struct {
 }
 
 // NewHTTPSpeechRecognizer 构造一个用于调用http+json协议接口的语音识别类实例对象
-func NewHTTPSpeechRecognizer(host string, port string, protocol string) *HTTPSpeechRecognizer {
+func NewHTTPSpeechRecognizer(host string, port string, protocol string, subPath string) *HTTPSpeechRecognizer {
+	protocol = strings.ToLower(protocol)
+	if protocol != "http" && protocol != "https" {
+		return nil
+	}
+
 	base := BaseSpeechRecognizer{
 		Host:     host,
 		Port:     port,
@@ -24,7 +32,7 @@ func NewHTTPSpeechRecognizer(host string, port string, protocol string) *HTTPSpe
 	}
 	httpSpeechRecognizer := HTTPSpeechRecognizer{
 		BaseSpeechRecognizer: base,
-		SubPath:              "",
+		SubPath:              subPath,
 	}
 
 	return &httpSpeechRecognizer
@@ -35,7 +43,14 @@ func (h *HTTPSpeechRecognizer) getURL() string {
 }
 
 // Recognite 调用ASRT语音识别
-func (h *HTTPSpeechRecognizer) Recognite(wavData []byte, frameRate int, channels int, byteWidth int) (*common.AsrtAPIResponse, error) {
+func (h *HTTPSpeechRecognizer) Recognite(wavData []byte, frameRate int, channels int, byteWidth int,
+) (*common.AsrtAPIResponse, error) {
+	if len(wavData) > wavDataMaxLength {
+		return nil, fmt.Errorf("error: %s `%d`, %s `%d`",
+			"Too long wave sample byte length:", len(wavData),
+			"the max length is", wavDataMaxLength)
+	}
+
 	requestBody := common.AsrtAPISpeechRequest{
 		Samples:    common.BytesToBase64(wavData),
 		SampleRate: frameRate,
@@ -66,7 +81,14 @@ func (h *HTTPSpeechRecognizer) Recognite(wavData []byte, frameRate int, channels
 }
 
 // RecogniteSpeech 调用ASRT语音识别声学模型
-func (h *HTTPSpeechRecognizer) RecogniteSpeech(wavData []byte, frameRate int, channels int, byteWidth int) (*common.AsrtAPIResponse, error) {
+func (h *HTTPSpeechRecognizer) RecogniteSpeech(wavData []byte, frameRate int, channels int, byteWidth int,
+) (*common.AsrtAPIResponse, error) {
+	if len(wavData) > wavDataMaxLength {
+		return nil, fmt.Errorf("error: %s `%d`, %s `%d`",
+			"Too long wave sample byte length:", len(wavData),
+			"the max length is", wavDataMaxLength)
+	}
+
 	requestBody := common.AsrtAPISpeechRequest{
 		Samples:    common.BytesToBase64(wavData),
 		SampleRate: frameRate,
@@ -125,7 +147,7 @@ func (h *HTTPSpeechRecognizer) RecogniteLanguage(sequencePinyin []string) (*comm
 }
 
 // RecogniteFile 调用ASRT语音识别来识别指定文件名的音频文件
-func (h *HTTPSpeechRecognizer) RecogniteFile(filename string) (*common.AsrtAPIResponse, error) {
+func (h *HTTPSpeechRecognizer) RecogniteFile(filename string) ([]*common.AsrtAPIResponse, error) {
 	binData := common.ReadBinFile(filename)
 	wavAudio := common.Wav{}
 	err := wavAudio.Deserialize(binData)
@@ -133,8 +155,29 @@ func (h *HTTPSpeechRecognizer) RecogniteFile(filename string) (*common.AsrtAPIRe
 		return nil, err
 	}
 
-	byteData := wavAudio.GetRawSamples()
-	rsp, err := h.Recognite(byteData, wavAudio.FrameRate, wavAudio.Channels, wavAudio.SampleWidth)
+	if wavAudio.FrameRate != 16000 {
+		return nil, fmt.Errorf("error: unsupport wave sample rate `%d`", wavAudio.FrameRate)
+	}
+	if wavAudio.Channels != 1 {
+		return nil, fmt.Errorf("error: unsupport wave channels number `%d`", wavAudio.Channels)
+	}
+	if wavAudio.SampleWidth != 2 {
+		return nil, fmt.Errorf("error: unsupport wave byte width `%d`", wavAudio.SampleWidth)
+	}
 
-	return rsp, err
+	byteData := wavAudio.GetRawSamples()
+	var asrtResult []*common.AsrtAPIResponse
+	duration := 2 * 16000 * 10
+
+	var index int = 0
+	for ; index < len(byteData)/duration+1; index++ {
+		rsp, err := h.Recognite(byteData, wavAudio.FrameRate, wavAudio.Channels, wavAudio.SampleWidth)
+		if err != nil {
+			return asrtResult, err
+		}
+
+		asrtResult = append(asrtResult, rsp)
+	}
+
+	return asrtResult, err
 }

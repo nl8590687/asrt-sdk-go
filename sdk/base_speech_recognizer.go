@@ -13,7 +13,7 @@ type ISpeechRecognizer interface {
 	// RecogniteLanguage 调用ASRT语音识别语言模型
 	RecogniteLanguage(sequencePinyin []string) (*common.AsrtAPIResponse, error)
 	// RecogniteFile 调用ASRT语音识别来识别指定文件名的音频文件
-	RecogniteFile(filename string) (*common.AsrtAPIResponse, error)
+	RecogniteFile(filename string) ([]*common.AsrtAPIResponse, error)
 }
 
 // BaseSpeechRecognizer ASRT语音识别SDK语音识别基类
