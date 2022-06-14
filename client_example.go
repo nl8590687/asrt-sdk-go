@@ -154,8 +154,8 @@ func grpcDemo() {
 	fmt.Println("语言模型结果：", result.Result)
 	// ======================================================
 	// 调用ASRT grpc接口流式识别
-	var wavChannel = make(chan *common.Wav, 5)
-	var recognitionResult = make(chan *common.AsrtAPIResponse, 5)
+	wavChannel := make(chan *common.Wav, 5)
+	recognitionResult := make(chan *common.AsrtAPIResponse, 5)
 	sendFunction := func() {
 		var index int
 		for index = 0; index < 10; index += 1 {

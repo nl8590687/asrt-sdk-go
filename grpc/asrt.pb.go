@@ -26,13 +26,14 @@ package grpc
 
 import (
 	context "context"
+	reflect "reflect"
+	sync "sync"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -398,14 +399,16 @@ func file_grpc_asrt_proto_rawDescGZIP() []byte {
 	return file_grpc_asrt_proto_rawDescData
 }
 
-var file_grpc_asrt_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_grpc_asrt_proto_goTypes = []interface{}{
-	(*SpeechRequest)(nil),   // 0: asrt.SpeechRequest
-	(*SpeechResponse)(nil),  // 1: asrt.SpeechResponse
-	(*LanguageRequest)(nil), // 2: asrt.LanguageRequest
-	(*TextResponse)(nil),    // 3: asrt.TextResponse
-	(*WavData)(nil),         // 4: asrt.WavData
-}
+var (
+	file_grpc_asrt_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+	file_grpc_asrt_proto_goTypes  = []interface{}{
+		(*SpeechRequest)(nil),   // 0: asrt.SpeechRequest
+		(*SpeechResponse)(nil),  // 1: asrt.SpeechResponse
+		(*LanguageRequest)(nil), // 2: asrt.LanguageRequest
+		(*TextResponse)(nil),    // 3: asrt.TextResponse
+		(*WavData)(nil),         // 4: asrt.WavData
+	}
+)
 var file_grpc_asrt_proto_depIdxs = []int32{
 	4, // 0: asrt.SpeechRequest.wav_data:type_name -> asrt.WavData
 	0, // 1: asrt.AsrtGrpcService.Speech:input_type -> asrt.SpeechRequest
@@ -603,18 +606,20 @@ type AsrtGrpcServiceServer interface {
 }
 
 // UnimplementedAsrtGrpcServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedAsrtGrpcServiceServer struct {
-}
+type UnimplementedAsrtGrpcServiceServer struct{}
 
 func (*UnimplementedAsrtGrpcServiceServer) Speech(context.Context, *SpeechRequest) (*SpeechResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Speech not implemented")
 }
+
 func (*UnimplementedAsrtGrpcServiceServer) Language(context.Context, *LanguageRequest) (*TextResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Language not implemented")
 }
+
 func (*UnimplementedAsrtGrpcServiceServer) All(context.Context, *SpeechRequest) (*TextResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method All not implemented")
 }
+
 func (*UnimplementedAsrtGrpcServiceServer) Stream(AsrtGrpcService_StreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method Stream not implemented")
 }

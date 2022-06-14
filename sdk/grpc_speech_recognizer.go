@@ -33,7 +33,7 @@ func NewGRPCSpeechRecognizer(host string, port string, protocol string) *GRPCSpe
 	}
 
 	address := fmt.Sprintf("%s:%s", host, port)
-	//得到 gRPC 链接客户端句柄
+	// 得到 gRPC 链接客户端句柄
 	var conn *grpc.ClientConn
 	var err error
 	if protocol == "grpc" {
@@ -49,7 +49,7 @@ func NewGRPCSpeechRecognizer(host string, port string, protocol string) *GRPCSpe
 
 	grpcSpeechRecognizer := GRPCSpeechRecognizer{
 		BaseSpeechRecognizer: base,
-		//将 proto 里面的服务句柄 和 gRPC句柄绑定
+		// 将 proto 里面的服务句柄 和 gRPC句柄绑定
 		Client:     grpcClient.NewAsrtGrpcServiceClient(conn),
 		connection: conn,
 	}
@@ -121,7 +121,6 @@ func (g *GRPCSpeechRecognizer) RecogniteSpeech(wavData []byte, frameRate int, ch
 
 // RecogniteLanguage 调用ASRT语音识别语言模型
 func (g *GRPCSpeechRecognizer) RecogniteLanguage(sequencePinyin []string) (*common.AsrtAPIResponse, error) {
-
 	grpcRequest := grpcClient.LanguageRequest{
 		Pinyins: sequencePinyin,
 	}
@@ -142,8 +141,9 @@ func (g *GRPCSpeechRecognizer) RecogniteLanguage(sequencePinyin []string) (*comm
 
 // RecogniteStream 调用ASRT语音识别来流式识别音频
 func (g *GRPCSpeechRecognizer) RecogniteStream(wavChannel <-chan *common.Wav,
-	resultChannel chan<- *common.AsrtAPIResponse) error {
-	var ctx = context.Background()
+	resultChannel chan<- *common.AsrtAPIResponse,
+) error {
+	ctx := context.Background()
 	streamClient, err := g.Client.Stream(ctx, grpc.EmptyCallOption{})
 	if err != nil {
 		return fmt.Errorf("error:%s", err.Error())
