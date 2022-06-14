@@ -20,10 +20,15 @@
 // package sdk ASRT语音识别接口调用SDK
 package sdk
 
+import "strings"
+
 // GetSpeechRecognizer 获取一个语音识别调用类实例对象
 func GetSpeechRecognizer(host string, port string, protocol string) ISpeechRecognizer {
+	protocol = strings.ToLower(protocol)
 	if protocol == "http" || protocol == "https" {
 		return NewHTTPSpeechRecognizer(host, port, protocol, "")
+	} else if protocol == "grpc" || protocol == "grpcs" {
+		return NewGRPCSpeechRecognizer(host, port, protocol)
 	}
 
 	return nil

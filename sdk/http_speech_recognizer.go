@@ -146,6 +146,36 @@ func (h *HTTPSpeechRecognizer) RecogniteLanguage(sequencePinyin []string) (*comm
 	return &responseBody, nil
 }
 
+// RecogniteLong 调用ASRT语音识别来识别长音频序列
+func (h *HTTPSpeechRecognizer) RecogniteLong(wavData []byte, frameRate int, channels int, byteWidth int,
+) ([]*common.AsrtAPIResponse, error) {
+	if frameRate != 16000 {
+		return nil, fmt.Errorf("error: unsupport wave sample rate `%d`", frameRate)
+	}
+	if channels != 1 {
+		return nil, fmt.Errorf("error: unsupport wave channels number `%d`", channels)
+	}
+	if byteWidth != 2 {
+		return nil, fmt.Errorf("error: unsupport wave byte width `%d`", byteWidth)
+	}
+
+	byteData := wavData
+	var asrtResult []*common.AsrtAPIResponse
+	duration := 2 * 16000 * 10
+
+	index := 0
+	for ; index < len(byteData)/duration+1; index++ {
+		rsp, err := h.Recognite(byteData, frameRate, channels, byteWidth)
+		if err != nil {
+			return asrtResult, err
+		}
+
+		asrtResult = append(asrtResult, rsp)
+	}
+
+	return asrtResult, nil
+}
+
 // RecogniteFile 调用ASRT语音识别来识别指定文件名的音频文件
 func (h *HTTPSpeechRecognizer) RecogniteFile(filename string) ([]*common.AsrtAPIResponse, error) {
 	binData := common.ReadBinFile(filename)
@@ -155,29 +185,8 @@ func (h *HTTPSpeechRecognizer) RecogniteFile(filename string) ([]*common.AsrtAPI
 		return nil, err
 	}
 
-	if wavAudio.FrameRate != 16000 {
-		return nil, fmt.Errorf("error: unsupport wave sample rate `%d`", wavAudio.FrameRate)
-	}
-	if wavAudio.Channels != 1 {
-		return nil, fmt.Errorf("error: unsupport wave channels number `%d`", wavAudio.Channels)
-	}
-	if wavAudio.SampleWidth != 2 {
-		return nil, fmt.Errorf("error: unsupport wave byte width `%d`", wavAudio.SampleWidth)
-	}
-
-	byteData := wavAudio.GetRawSamples()
-	var asrtResult []*common.AsrtAPIResponse
-	duration := 2 * 16000 * 10
-
-	index := 0
-	for ; index < len(byteData)/duration+1; index++ {
-		rsp, err := h.Recognite(byteData, wavAudio.FrameRate, wavAudio.Channels, wavAudio.SampleWidth)
-		if err != nil {
-			return asrtResult, err
-		}
-
-		asrtResult = append(asrtResult, rsp)
-	}
+	asrtResult, err := h.RecogniteLong(wavAudio.GetRawSamples(),
+		wavAudio.FrameRate, wavAudio.Channels, wavAudio.SampleWidth)
 
 	return asrtResult, err
 }
