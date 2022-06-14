@@ -16,7 +16,6 @@ import (
 type GRPCSpeechRecognizer struct {
 	BaseSpeechRecognizer
 	Client     grpcClient.AsrtGrpcServiceClient
-	address    string
 	connection *grpc.ClientConn
 }
 
@@ -183,13 +182,17 @@ func (g *GRPCSpeechRecognizer) RecogniteStream(wavChannel <-chan *common.Wav,
 				ByteWidth:  int32(value.SampleWidth),
 			},
 		}
-		streamClient.Send(&grpcRequest)
+		err = streamClient.Send(&grpcRequest)
 		if err != nil {
 			return fmt.Errorf("error:%s", err.Error())
 		}
 	}
 
-	streamClient.CloseSend()
+	err = streamClient.CloseSend()
+	if err != nil {
+		return fmt.Errorf("error:%s", err.Error())
+	}
+
 	_, cancel := context.WithCancel(ctx)
 	cancel()
 

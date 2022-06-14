@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	//httpDemo()
+	httpDemo()
 	grpcDemo()
 }
 
