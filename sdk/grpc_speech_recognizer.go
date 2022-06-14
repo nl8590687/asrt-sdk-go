@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/nl8590687/asrt-sdk-go/common"
 	grpcClient "github.com/nl8590687/asrt-sdk-go/grpc"
@@ -37,7 +38,7 @@ func NewGRPCSpeechRecognizer(host string, port string, protocol string) *GRPCSpe
 	var conn *grpc.ClientConn
 	var err error
 	if protocol == "grpc" {
-		conn, err = grpc.Dial(address, grpc.WithInsecure())
+		conn, err = grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	} else {
 		conn, err = grpc.Dial(address)
 	}
